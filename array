@@ -58,26 +58,11 @@ public:
 a[size] = new_element;
 size++;
 }
-void append(const Array & other){
-    if(size+other.size>capacity){
-        capacity *=2;
-        int* new_a=new int[capacity];
-        for(int i=0;i<other.size;i++){
-            new_a[i]=a[i];
-            a[size + i] = other.a[i];
-        }
-        for (int i=0; i<other.size; i++){
-            
-        }
-        delete[]a;
-        a=new_a;
-        size += other.size;
-    }
-}
+
 
 void erase(int index) {
     if(index >= 0 && index < size) {
-            // ИСПРАВЛЕНО: правильный цикл для сдвига элементов
+            
         for(int i = index; i < size - 1; i++) {
             a[i] = a[i + 1];
         }
