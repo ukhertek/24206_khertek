@@ -1,1 +1,119 @@
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 
+class Array {
+public:
+ // КОНСТРУКТОР
+ // бывшая функция init
+ Array() {
+    capacity = 10;
+    size=0;
+    a = new int[capacity];
+ }
+ Array(const Array &another){
+    this->size = another.size;
+    this->capacity=another.capacity;
+    this->a=new int[capacity];
+    
+    for(int i=0;i<size;i++){
+        this->a[i]=another.a[i];  
+    }
+}
+ Array& operator=(const Array &another){
+    if(this==&another){
+        return *this;
+    }else{
+        delete[]a;
+        this->size=another.size;
+        this->capacity=another.capacity;
+        a=new int[capacity];
+        for(int i=0;i<size;i++){
+            this->a[i]=another.a[i];
+        }
+        return *this;
+
+    }
+
+ }
+ 
+
+ // ДЕСТРУКТОР
+ ~Array() {
+  delete[]a;
+  a = nullptr;
+ }
+
+ // метод класса
+ void append(int new_element) {
+  if (size == capacity) {
+   capacity *= 2;
+   int* new_a=new int[capacity];
+   for(int i=0;i<size;i++){
+    new_a[i]=a[i];
+   }
+   delete[]a;
+   a=new_a;
+}
+a[size] = new_element;
+size++;
+}
+void append(const Array & other){
+    if(size+other.size>capacity){
+        capacity *=2;
+        int* new_a=new int[capacity];
+        for(int i=0;i<other.size;i++){
+            new_a[i]=a[i];
+            a[size + i] = other.a[i];
+        }
+        for (int i=0; i<other.size; i++){
+            
+        }
+        delete[]a;
+        a=new_a;
+        size += other.size;
+    }
+}
+
+void erase(int index) {
+    if(index >= 0 && index < size) {
+            // ИСПРАВЛЕНО: правильный цикл для сдвига элементов
+        for(int i = index; i < size - 1; i++) {
+            a[i] = a[i + 1];
+        }
+        size--;
+    }
+}
+
+
+void erase(int index, int n){
+    if(index>=0 &&index<size &&n>0&&n < size-index){
+        for(int i=index;i<size-n;i++){
+            a[i]=a[i+n];
+        }size-=n;
+     }
+}
+
+ // поля класса
+private:
+int* a = nullptr; // бывший NULL
+size_t size = 0;
+size_t capacity = 0;
+
+};
+
+int main() {
+ Array arr; // ЭТО ВЫЗОВ КОНСТРУКТОРА
+ Array a;
+ a.append(2);
+
+ int x = 0;
+ while (1 == scanf("%d", &x)) {
+  arr.append(x);
+ }
+
+ // В ЭТОЙ ТОЧКЕ ПРОИСХОДИТ НЕЯВНЫЙ ВЫЗОВ
+ // ДЕСТРУКТОРА
+ // arr.~Array();
+ return 0;
+}
